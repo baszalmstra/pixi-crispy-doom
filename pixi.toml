@@ -1,0 +1,22 @@
+[project]
+name = "pixi-crispy-doom"
+version = "6.0.0"
+description = "Add a short description here"
+authors = ["Bas Zalmstra <zalmstra.bas@gmail.com>"]
+channels = ["conda-forge"]
+platforms = ["win-64", "linux-64", "osx-64", "osx-arm64"]
+license = "GPL-2.0"
+
+[tasks]
+configure = "cmake -G Ninja -S src -B build"
+build = { cmd = "cmake --build build", depends_on = ["configure"] }
+start = { cmd = "build/src/crispy-doom", depends_on = ["build"]}
+
+[dependencies]
+cmake = "~=3.26.4"
+ninja = "~=1.11.1"
+c-compiler = "~=1.6.0"
+sdl2 = "~=2.26.5"
+sdl2_mixer = "~=2.6.3"
+sdl2_net = "~=2.2.0"
+libpng = "~=1.6.39"
