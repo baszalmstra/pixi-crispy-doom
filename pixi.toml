@@ -1,6 +1,5 @@
 [workspace]
 name = "pixi-crispy-doom"
-description = "Add a short description here"
 authors = ["Bas Zalmstra <zalmstra.bas@gmail.com>"]
 channels = ["https://prefix.dev/conda-forge"]
 platforms = ["win-64", "linux-64", "osx-arm64", "osx-64"]
@@ -14,8 +13,29 @@ preview = ["pixi-build"]
 crispy-doom = { path = "." }
 
 [tasks.start]
-cmd = "crispy-doom"
+cmd = "crispy-doom -iwad freedoom-0.13.0/freedoom1.wad"
 description = "Start the crispy-doom executable from our locally built package."
+depends-on = ["module", "get-iwad"]
+
+#
+# The prep environment is used to prepare the build environment.
+#
+
+[feature.prep.dependencies]
+python = ">=3.13"
+
+[feature.prep.tasks.module]
+cmd = "git submodule update --init --recursive"
+description = "Download and initialize the submodules"
+outputs = ["src/README.md"]
+
+[feature.prep.tasks.get-iwad]
+cmd = "python get_freedoom_iwad.py"
+description = "Download and extract Freedoom IWADs"
+outputs = ["freedoom1.wad","freedoom2.wad","freedm.wad", ]
+
+[environments]
+prep = { features = ["prep"], no-default-feature = true }
 
 #
 # This section defines the package crispy-doom from the root of the repository.
